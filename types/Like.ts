@@ -1,4 +1,5 @@
 export interface Like {
     userId: number,
-    threadId: number
+    threadId: number,
+    isRemoved: boolean
 }

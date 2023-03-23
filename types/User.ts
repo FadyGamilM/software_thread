@@ -4,6 +4,7 @@ export interface User {
     lastname: string,
     email?: string,
     password?: string,
-    username: string
+    username: string,
+    isRemoved: boolean
 }
 
