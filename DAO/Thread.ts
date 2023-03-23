@@ -8,7 +8,7 @@ export interface ThreadDao {
     CreateNewThread(thread: Thread): void
 
     // return a thread by id 
-    GetThreadById(threadId: number): Thread
+    GetThreadById(threadId: number): Thread | undefined
 
     // delete a thread
     DeleteThreadById(threadId: number): void
