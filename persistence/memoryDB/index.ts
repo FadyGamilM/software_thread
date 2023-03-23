@@ -77,3 +77,5 @@ export class InMemDataStore implements datastore {
         )
     }
 }
+
+export const db: InMemDataStore = new InMemDataStore()
