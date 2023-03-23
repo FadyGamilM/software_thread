@@ -1,6 +1,6 @@
 import { Thread } from "../types/Thread"
 
-export interface ThreadDato {
+export interface ThreadDao {
     // a method to fetch all threads 
     ListAllThreads(): Thread[]
 
