@@ -1,0 +1,21 @@
+{
+  "name": "software_thread",
+  "version": "1.0.0",
+  "description": "A backend service for a website I call it `software thread` which is all about software engineers share their knowledge, valuable resources, and other software related stuff they wanna talk about.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "nodemon index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.17",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}
