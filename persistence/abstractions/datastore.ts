@@ -1,7 +1,7 @@
-import { ThreadDao } from '../../DAO/Thread';
-import { CommentDao } from '../../DAO/Comment';
-import { UserDao } from '../../DAO/User';
-import { LikeDao } from '../../DAO/Like';
+import { ThreadDao } from '../../DAOs/Thread';
+import { CommentDao } from '../../DAOs/Comment';
+import { UserDao } from '../../DAOs/User';
+import { LikeDao } from '../../DAOs/Like';
 
 
 // any datastore must supports all others DAOs functionalities 

@@ -1,14 +1,15 @@
-import { User } from "../types/User"
+import { User } from "../types/User";
 // abstractions of all functionalities to handle the user entity from database to our service logic 
-export interface UserDao {
+export interface UserDao
+{
     // method to createa a new user 
-    CreateUser(user: User): void
+    CreateUser(user: User): Promise<void>;
 
     // method to check if user is signed in
     // this method fetch the user by email and return it if its found
     // or return undefined if its not found
-    GetUserByEmail(email: string): User | undefined
+    GetUserByEmail(email: string): Promise<User | undefined>;
 
     // same as `getUserByEmail`   
-    GetUserByUsername(username: string): User | undefined
+    GetUserByUsername(username: string): Promise<User | undefined>;
 }

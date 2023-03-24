@@ -1,81 +1,105 @@
-import { Comment } from '../../types/Comment';
-import { Like } from '../../types/Like';
-import { Thread } from '../../types/Thread';
-import { User } from '../../types/User';
-import { datastore } from '../abstractions/datastore';
+import { Comment } from "../../types/Comment";
+import { Like } from "../../types/Like";
+import { Thread } from "../../types/Thread";
+import { User } from "../../types/User";
+import { datastore } from "../abstractions/datastore";
 
-export class InMemDataStore implements datastore {
+export class InMemDataStore implements datastore
+{
     //! define the store entities
-    private users: User[] = []
-    private threads: Thread[] = []
-    private likes: Like[] = []
-    private comments: Comment[] = []
-
+    private users: User[] = [];
+    private threads: Thread[] = [];
+    private likes: Like[] = [];
+    private comments: Comment[] = [];
 
     // implement the data store abstraction
-    CreateUser(user: User): void {
-        this.users.push(user)
+    CreateUser(user: User): Promise<void>
+    {
+        this.users.push(user);
+        return Promise.resolve();
     }
 
-    GetUserByEmail(email: string): User | undefined {
-        let existingUser: User | undefined = this.users.find(
-            (user) => user.email === email ? user : undefined
-        )
-        return existingUser
+    GetUserByEmail(email: string): Promise<User | undefined>
+    {
+        let existingUser: User | undefined = this.users.find((user) =>
+            user.email === email ? user : undefined
+        );
+        return Promise.resolve(existingUser);
     }
 
-    GetUserByUsername(username: string): User | undefined {
-        let existingUser: User | undefined = this.users.find(
-            (user) => user.username === username ? user : undefined
-        )
-        return existingUser
+    GetUserByUsername(username: string): Promise<User | undefined>
+    {
+        let existingUser: User | undefined = this.users.find((user) =>
+            user.username === username ? user : undefined
+        );
+        return Promise.resolve(existingUser);
     }
 
-    GetThreadLikes(threadId: number): Like[] {
-        const allLikes: Like[] = this.likes.filter(like => like.threadId === threadId)
-        return allLikes;
+    GetThreadLikes(threadId: number): Promise<Like[]>
+    {
+        const allLikes: Like[] = this.likes.filter(
+            (like) => like.threadId === threadId
+        );
+        return Promise.resolve(allLikes);
     }
 
-    AddLikeToThread(like: Like): void {
-        this.likes.push(like)
+    AddLikeToThread(like: Like): Promise<void>
+    {
+        this.likes.push(like);
+        return Promise.resolve();
     }
 
-    DislikeThread(like: Like): void {
-        this.likes.find((aLike) => {
-            if (like.id === aLike.id)
-                aLike.isRemoved = true
-        })
+    DislikeThread(like: Like): Promise<void>
+    {
+        this.likes.find((aLike) =>
+        {
+            if (like.id === aLike.id) aLike.isRemoved = true;
+        });
+        return Promise.resolve();
     }
 
-    ListComments(threadId: number): Comment[] {
-        return this.comments
+    ListComments(threadId: number): Promise<Comment[]>
+    {
+        return Promise.resolve(this.comments);
     }
 
-    AddComment(comment: Comment): void {
-        this.comments.push(comment)
+    AddComment(comment: Comment): Promise<void>
+    {
+        this.comments.push(comment);
+        return Promise.resolve();
     }
 
-    ListAllThreads(): Thread[] {
-        return this.threads;
+    ListAllThreads(): Promise<Thread[]>
+    {
+        return Promise.resolve(this.threads);
     }
 
-    CreateNewThread(thread: Thread): void {
-        this.threads.push(thread)
+    CreateNewThread(thread: Thread): Promise<void>
+    {
+        console.log("db : ", this.threads);
+        this.threads.push(thread);
+        console.log("db : ", this.threads);
+        return Promise.resolve();
     }
 
-    GetThreadById(threadId: number): Thread | undefined {
-        let foundThread: Thread | undefined = this.threads.find(t => t.id === threadId)
-        return foundThread === undefined ? undefined : foundThread
+    GetThreadById(threadId: number): Promise<Thread | undefined>
+    {
+        let foundThread: Thread | undefined = this.threads.find(
+            (t) => t.id === threadId
+        );
+        return foundThread === undefined
+            ? Promise.resolve(undefined)
+            : Promise.resolve(foundThread);
     }
 
-    DeleteThreadById(threadId: number): void {
-        this.threads.find(
-            thread => {
-                if (threadId === thread.id)
-                    thread.isRemoved = true
-            }
-        )
+    DeleteThreadById(threadId: number): Promise<void>
+    {
+        this.threads.find((thread) =>
+        {
+            if (threadId === thread.id) thread.isRemoved = true;
+        });
+        return Promise.resolve();
     }
 }
 
-export const db: InMemDataStore = new InMemDataStore()
+export const db: InMemDataStore = new InMemDataStore();

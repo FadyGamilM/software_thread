@@ -1,23 +1,27 @@
-import express from "express"
-import { logger } from "./logger"
-import { ListAllThreadsHandler } from './controllers/Thread';
+import express from "express";
+import { logger } from "./logger";
+import { CreateThread, ListAllThreadsHandler } from './controllers/Thread';
+import { ErrorHandler } from "./Errors/ErrorHandler";
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
-app.post("/threads/new", (req, res, next) => {
-    console.log("hello")
-    return res.status(200).json(req.body)
-})
+app.use(logger);
 
-app.get("/threads", logger, ListAllThreadsHandler)
+app.get("/threads/list", ListAllThreadsHandler);
+app.post("/threads/new", CreateThread);
 
-app.get("/", (req, res, next) => {
-    return res.send("hello")
-})
+app.get("/", (req, res, next) =>
+{
+    return res.send("hello from server ");
+});
 
-let PORT = 5000
-app.listen("5000", () => {
-    console.log(`app is running on port ${PORT}`)
+
+app.use(ErrorHandler);
+
+let PORT = 5000;
+app.listen("5000", () =>
+{
+    console.log(`app is running on port ${PORT}`);
 })
 
