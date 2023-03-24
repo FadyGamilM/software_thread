@@ -102,4 +102,10 @@ export class InMemDataStore implements datastore
     }
 }
 
-export const db: InMemDataStore = new InMemDataStore();
+// decare the db object 
+let db: datastore;
+// instantiate it 
+export const InitDB = async () =>
+{
+    db = new InMemDataStore();
+};
