@@ -1,11 +1,16 @@
 import { RequestHandler } from 'express';
-import { db } from '../persistence/memoryDB';
+// ==> i will use sqlite now 
+// import { db } from '../persistence/memoryDB';
+
+// ==> utilize the sqlite db 
+import { db } from "../persistence/sqliteDB";
 import { CustomRequestHandler } from "../DTOs/CustomRequestHandler";
 import { CreateThreadRequest } from '../DTOs/Thread/CreateThreadRequest';
 import { CreateThreadResponse } from '../DTOs/Thread/CreateThreadResponse';
 import crypto from "crypto";
 import { Thread } from "../types/Thread";
 import { ListThreadsResponse } from '../DTOs/Thread/ListThreadsResponse';
+
 
 // URL =>  GET  `/5000/threads/list`
 // => the received req type is an object 
