@@ -1,4 +1,4 @@
-import { open as openSqlite } from "sqlite";
+import { open as openSqlite, Database } from "sqlite";
 import { Comment } from "../../types/Comment";
 import { Like } from "../../types/Like";
 import { Thread } from "../../types/Thread";
@@ -12,20 +12,27 @@ import sqlite from "sqlite";
 
 class SqliteDataStore implements datastore
 {
+   //! initialize this db property later
+   private db!: Database<sqlite3.Database, sqlite3.Statement>;
 
-   //! CONNECT TO DATABASE AND RETURN INSTANCE OF THIS CLASS 
+   //! CONNECT TO DATABASE AND RETURN INSTANCE OF THIS CLASS
    public async connect()
    {
       //* connect to the database
-      const db = await openSqlite({
-         filename: path.join(__dirname, 'software_thread.sqlite'),
-         driver: sqlite3.Database
+      this.db = await openSqlite({
+         filename: path.join(__dirname, "software_thread.sqlite"),
+         driver: sqlite3.Database,
       });
 
-      //* apply migrations 
-      await db.migrate({
-         migrationsPath: path.join(__dirname, 'migrations')
+      //* adjust the default behaviour of sqlite which is not enforcing the refrential integrity
+      this.db.run(`PRAGMA foreign_keys = ON;`);
+
+      //* apply migrations
+      await this.db.migrate({
+         migrationsPath: path.join(__dirname, "migrations"),
       });
+
+
 
       //* now return an instance of the class itself
       return this;
@@ -64,14 +71,24 @@ class SqliteDataStore implements datastore
    {
       throw new Error("Method not implemented.");
    }
-   ListAllThreads(): Promise<Thread[]>
+
+   async ListAllThreads(): Promise<Thread[]>
    {
-      throw new Error("Method not implemented.");
+      return await this.db.all<Thread[]>(`SELECT * FROM threads`);
    }
-   CreateNewThread(thread: Thread): Promise<void>
+
+   async CreateNewThread(thread: Thread): Promise<void>
    {
-      throw new Error("Method not implemented.");
+      await this.db.run(
+         `INSERT INTO threads ( title, url, user_id, is_removed, created_at) VALUES (?, ?, ?, ?, ?)`,
+         thread.title,
+         thread.url,
+         thread.userId,
+         thread.isRemoved,
+         thread.createdAt
+      );
    }
+
    GetThreadById(threadId: number): Promise<Thread | undefined>
    {
       throw new Error("Method not implemented.");
@@ -82,9 +99,9 @@ class SqliteDataStore implements datastore
    }
 }
 
-// decare the db object 
+// decare the db object
 export let db: datastore;
-// instantiate it 
+// instantiate it
 export const InitDB = async () =>
 {
    db = await new SqliteDataStore().connect();
