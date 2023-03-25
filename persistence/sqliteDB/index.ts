@@ -44,7 +44,7 @@ class SqliteDataStore implements datastore
       await this.db.run(
          `INSERT INTO users (first_name, last_name, email, password, username, is_removed, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
          user.firstName,
-         user.lastname,
+         user.lastName,
          user.email,
          user.password,
          user.username,
