@@ -32,41 +32,58 @@ class SqliteDataStore implements datastore
          migrationsPath: path.join(__dirname, "migrations"),
       });
 
-
-
       //* now return an instance of the class itself
       return this;
    }
 
+   //! constructor
    constructor() { }
-   CreateUser(user: User): Promise<void>
+
+   async CreateUser(user: User): Promise<void>
    {
-      throw new Error("Method not implemented.");
+      await this.db.run(
+         `INSERT INTO users (first_name, last_name, email, password, username, is_removed, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
+         user.firstName,
+         user.lastname,
+         user.email,
+         user.password,
+         user.username,
+         user.isRemoved,
+         user.createdAt
+      );
    }
-   GetUserByEmail(email: string): Promise<User | undefined>
+
+   async GetUserByEmail(email: string): Promise<User | undefined>
    {
-      throw new Error("Method not implemented.");
+      // TODO => don't select *, just select what the user controller will need to procceed to handle the request
+      return await this.db.all<User>(`SELECT * FROM users WHERE email = ?`, email);
    }
+
    GetUserByUsername(username: string): Promise<User | undefined>
    {
       throw new Error("Method not implemented.");
    }
+
    GetThreadLikes(threadId: number): Promise<Like[]>
    {
       throw new Error("Method not implemented.");
    }
+
    AddLikeToThread(like: Like): Promise<void>
    {
       throw new Error("Method not implemented.");
    }
+
    DislikeThread(like: Like): Promise<void>
    {
       throw new Error("Method not implemented.");
    }
+
    ListComments(threadId: number): Promise<Comment[]>
    {
       throw new Error("Method not implemented.");
    }
+
    AddComment(comment: Comment): Promise<void>
    {
       throw new Error("Method not implemented.");
@@ -93,6 +110,7 @@ class SqliteDataStore implements datastore
    {
       throw new Error("Method not implemented.");
    }
+
    DeleteThreadById(threadId: number): Promise<void>
    {
       throw new Error("Method not implemented.");

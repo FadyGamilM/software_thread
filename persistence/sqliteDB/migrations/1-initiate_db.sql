@@ -6,7 +6,8 @@ CREATE TABLE users (
    email VARCHAR,
    password VARCHAR,
    username VARCHAR NOT NULL,
-   is_removed INTEGER NOT NULL DEFAULT FALSE
+   is_removed INTEGER NOT NULL DEFAULT FALSE, 
+   created_at INTEGER NOT NULL
 );
 
 -- create threads table
